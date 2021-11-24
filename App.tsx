@@ -1,22 +1,18 @@
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import Top from "./src/containers/Pages/Top";
+import Game from "./src/containers/Pages/Game";
+import GameConfig from "./src/containers/Pages/GameConfig";
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>
-        <Top />
-      </Text>
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="Game" component={Game} />
+        <Tab.Screen name="設定" component={GameConfig} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

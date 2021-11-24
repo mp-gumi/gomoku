@@ -6,12 +6,17 @@ import GomokuBox from "../GomokuBox";
 import GomokuGameStatusText from "../GomokuGameStatusText";
 
 export type BoardValueType = -1 | 0 | 1;
-export type JudgementType = -1 | 0 | 1;
+export type JudgementType = -1 | 0 | 1 | undefined;
+export type JudgeWinnerMessageType =
+  | "〇の勝利です"
+  | "✕の勝利です"
+  | "引き分けです"
+  | undefined;
 
 function GomokuTop() {
   const windowWidth = Dimensions.get("window").width;
-  const squareNumber = 5;
-  const quote = 4;
+  const squareNumber = 9;
+  const quote = 5;
   const squareWidth = (windowWidth - 40) / squareNumber;
   const [isFirstMove, setIsFirstMove] = useState(true);
   const [turnNumber, setTurnNumber] = useState<number>(1);
@@ -64,6 +69,8 @@ function GomokuTop() {
 
   const judgeFinish = (
     quote: number,
+    squareNumber: number,
+    turnNumber: number,
     boardValuesArray: BoardValueType[][]
   ): JudgementType => {
     for (let i = 0; i < squareNumber; i++) {
@@ -73,17 +80,19 @@ function GomokuTop() {
             if (boardValuesArray[i][j + k] !== 1) break;
             if (k === quote - 1) return 1;
           }
-          for (let k = 1; k < quote; k++) {
-            if (boardValuesArray[i + k][j] !== 1) break;
-            if (k === quote - 1) return 1;
-          }
-          for (let k = 1; k < quote; k++) {
-            if (boardValuesArray[i + k][j + k] !== 1) break;
-            if (k === quote - 1) return 1;
-          }
-          for (let k = 1; k < quote; k++) {
-            if (boardValuesArray[i + k][j - k] !== 1) break;
-            if (k === quote - 1) return 1;
+          if (i <= squareNumber - quote) {
+            for (let k = 1; k < quote; k++) {
+              if (boardValuesArray[i + k][j] !== 1) break;
+              if (k === quote - 1) return 1;
+            }
+            for (let k = 1; k < quote; k++) {
+              if (boardValuesArray[i + k][j + k] !== 1) break;
+              if (k === quote - 1) return 1;
+            }
+            for (let k = 1; k < quote; k++) {
+              if (boardValuesArray[i + k][j - k] !== 1) break;
+              if (k === quote - 1) return 1;
+            }
           }
         }
         if (boardValuesArray[i][j] === -1) {
@@ -91,36 +100,47 @@ function GomokuTop() {
             if (boardValuesArray[i][j + k] !== -1) break;
             if (k === quote - 1) return -1;
           }
-          for (let k = 1; k < quote; k++) {
-            if (boardValuesArray[i + k][j] !== -1) break;
-            if (k === quote - 1) return -1;
-          }
-          for (let k = 1; k < quote; k++) {
-            if (boardValuesArray[i + k][j + k] !== -1) break;
-            if (k === quote - 1) return -1;
-          }
-          for (let k = 1; k < quote; k++) {
-            if (boardValuesArray[i + k][j - k] !== -1) break;
-            if (k === quote - 1) return -1;
+          if (i <= squareNumber - quote) {
+            for (let k = 1; k < quote; k++) {
+              if (boardValuesArray[i + k][j] !== -1) break;
+              if (k === quote - 1) return -1;
+            }
+            for (let k = 1; k < quote; k++) {
+              if (boardValuesArray[i + k][j + k] !== -1) break;
+              if (k === quote - 1) return -1;
+            }
+            for (let k = 1; k < quote; k++) {
+              if (boardValuesArray[i + k][j - k] !== -1) break;
+              if (k === quote - 1) return -1;
+            }
           }
         }
       }
     }
-    return 0;
+    if (turnNumber === Math.pow(squareNumber, 2) + 1) return 0;
+    return;
   };
 
   const judgeWinnerMessage = () => {
-    if (judgeFinish(quote, boardValuesArray) === 1) {
-      return "〇の勝利です";
-    }
-    if (judgeFinish(quote, boardValuesArray) === -1) {
-      return "✕の勝利です";
+    switch (judgeFinish(quote, squareNumber, turnNumber, boardValuesArray)) {
+      case 1:
+        return "〇の勝利です";
+      case -1:
+        return "✕の勝利です";
+      case 0:
+        return "引き分けです";
     }
   };
 
-  const isGameFinished = () => {
-    if (judgeFinish(quote, boardValuesArray) === 0) return false;
-    return true;
+  const isGameFinished = (): boolean => {
+    const judge = judgeFinish(
+      quote,
+      squareNumber,
+      turnNumber,
+      boardValuesArray
+    );
+    if (judge === 1 || judge === -1 || judge === 0) return true;
+    return false;
   };
 
   return (

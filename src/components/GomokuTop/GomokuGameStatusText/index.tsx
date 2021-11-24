@@ -20,7 +20,11 @@ function GomokuGameStatusText({
     <View style={styles.statusText}>
       <Text style={styles.statusText}>Next:{isFirstMove ? "〇" : "✕"}</Text>
       <Text style={styles.statusText}>{judgeWinnerMessage()}</Text>
-      <Text style={styles.statusText}>{turnNumber}手目</Text>
+      <Text style={styles.statusText}>
+        {judgeWinnerMessage()
+          ? `${turnNumber - 1}手で決着`
+          : `${turnNumber}手目`}
+      </Text>
     </View>
   );
 }

@@ -21,8 +21,8 @@ export default function App() {
             }
             return <Icon name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: "tomato",
-          tabBarInactiveTintColor: "gray",
+          tabBarActiveTintColor: "#28f",
+          tabBarInactiveTintColor: "#888",
         })}
       >
         <Tab.Screen name="Game" component={Game} />

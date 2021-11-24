@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, Pressable, Image } from "react-native";
-import o from "../../../assets/o.png";
-import x from "../../../assets/x.png";
-import { BoardValueType } from "../GomokuTop";
+import o from "../../../../assets/o.png";
+import x from "../../../../assets/x.png";
+import { BoardValueType } from "..";
 
 export type GomokuBoxProps = {
   squareWidth: number;

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Button, View, StyleSheet } from "react-native";
 import { Table, Rows } from "react-native-table-component";
 import { Dimensions } from "react-native";
-import GomokuBox from "../GomokuBox";
-import GomokuGameStatusText from "../GomokuGameStatusText";
+import GomokuBox from "./GomokuBox";
+import GomokuGameStatusText from "./GomokuGameStatusText";
 
 export type BoardValueType = -1 | 0 | 1;
 export type JudgementType = -1 | 0 | 1 | undefined;
@@ -16,7 +16,7 @@ export type JudgeWinnerMessageType =
 function GomokuTop() {
   const windowWidth = Dimensions.get("window").width;
   const squareNumber = 9;
-  const quote = 5;
+  const quote = 3;
   const squareWidth = (windowWidth - 40) / squareNumber;
   const [isFirstMove, setIsFirstMove] = useState(true);
   const [turnNumber, setTurnNumber] = useState<number>(1);
@@ -130,6 +130,7 @@ function GomokuTop() {
       case 0:
         return "引き分けです";
     }
+    return;
   };
 
   const isGameFinished = (): boolean => {

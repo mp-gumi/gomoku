@@ -1,18 +1,18 @@
-import ConfigTop from "../../../components/ConfigTop";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
+import GomokuTop from "../../components/GomokuTop";
 
-function GameConfig() {
+function Game() {
   return (
-    <View>
+    <View style={styles.container}>
       <Text>
-        <ConfigTop />
+        <GomokuTop />
       </Text>
     </View>
   );
 }
 
-export default GameConfig;
+export default Game;
 
 const styles = StyleSheet.create({
   container: {

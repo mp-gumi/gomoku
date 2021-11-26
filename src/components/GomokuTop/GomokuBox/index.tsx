@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { StyleSheet, Pressable, Image } from "react-native";
 import o from "../../../../assets/o.png";
 import x from "../../../../assets/x.png";
 import { BoardValueType } from "..";
 
-export type GomokuBoxProps = {
+type GomokuBoxProps = {
   squareWidth: number;
   Xcoordinate: number;
   Ycoordinate: number;
@@ -19,7 +19,7 @@ function GomokuBox({
   boardValuesArray,
   handlePressSquare,
 }: GomokuBoxProps) {
-  const squareImage = () => {
+  const squareImage = useCallback((): JSX.Element | undefined => {
     if (boardValuesArray[Ycoordinate][Xcoordinate] === 1) {
       return (
         <Image
@@ -37,7 +37,7 @@ function GomokuBox({
       );
     }
     return;
-  };
+  }, [boardValuesArray, Xcoordinate, Ycoordinate, squareWidth]);
 
   return (
     <Pressable

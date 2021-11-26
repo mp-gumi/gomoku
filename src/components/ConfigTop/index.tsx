@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import { Dimensions, StyleSheet, Text, TextInput, View } from "react-native";
 import {
   SquareNumberContext,
@@ -12,25 +12,25 @@ function ConfigTop() {
   const { secondPlayer, setSecondPlayer } = useContext(SecondPlayerContext);
   const { squareNumber, setSquareNumber } = useContext(SquareNumberContext);
   const { quote, setQuote } = useContext(QuoteContext);
-  const checkPositiveNumber = (value: string): JSX.Element | null => {
-    if (parseInt(value, 10) > 1) return null;
+  const checkPositiveNumberText = useCallback((value: string): JSX.Element => {
+    if (parseInt(value, 10) > 1) return <View />;
     return (
       <Text style={styles.warnText}>※1より大きい数字を入力してください</Text>
     );
-  };
-  const checkWinNumber = (
-    squareNumber: string,
-    quote: string
-  ): JSX.Element | null => {
-    if (parseInt(squareNumber, 10) < parseInt(quote, 10)) {
-      return (
-        <Text style={styles.warnText}>
-          ※勝利個数は盤面サイズより小さくしてください
-        </Text>
-      );
-    }
-    return null;
-  };
+  }, []);
+  const checkWinNumberText = useCallback(
+    (squareNumber: string, quote: string): JSX.Element => {
+      if (parseInt(squareNumber, 10) < parseInt(quote, 10)) {
+        return (
+          <Text style={styles.warnText}>
+            ※勝利個数は盤面サイズより小さくしてください
+          </Text>
+        );
+      }
+      return <View />;
+    },
+    [squareNumber, quote]
+  );
 
   const windowWidth = Dimensions.get("window").width;
 
@@ -63,7 +63,7 @@ function ConfigTop() {
             value={squareNumber}
           />
         </View>
-        <Text>{checkPositiveNumber(squareNumber)}</Text>
+        <Text>{checkPositiveNumberText(squareNumber)}</Text>
       </View>
       <View style={styles.number}>
         <View style={[styles.numberInner, { width: windowWidth }]}>
@@ -76,8 +76,8 @@ function ConfigTop() {
             value={quote}
           />
         </View>
-        <Text>{checkPositiveNumber(quote)}</Text>
-        <Text>{checkWinNumber(squareNumber, quote)}</Text>
+        <Text>{checkPositiveNumberText(quote)}</Text>
+        <Text>{checkWinNumberText(squareNumber, quote)}</Text>
       </View>
     </View>
   );
@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   warnText: {
+    marginLeft: 10,
     paddingLeft: 10,
     color: "#f00",
   },

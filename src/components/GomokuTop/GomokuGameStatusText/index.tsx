@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { FirstPlayerContext, SecondPlayerContext } from "../../../context";
 
 type GomokuGameStatusType = {
   isFirstMove: boolean;
@@ -16,15 +17,26 @@ function GomokuGameStatusText({
   judgeWinnerMessage,
   turnNumber,
 }: GomokuGameStatusType) {
+  const { firstPlayer } = useContext(FirstPlayerContext);
+  const { secondPlayer } = useContext(SecondPlayerContext);
+
   return (
-    <View style={styles.statusText}>
-      <Text style={styles.statusText}>Next:{isFirstMove ? "〇" : "✕"}</Text>
-      <Text style={styles.statusText}>{judgeWinnerMessage()}</Text>
-      <Text style={styles.statusText}>
-        {judgeWinnerMessage()
-          ? `${turnNumber - 1}手で決着`
-          : `${turnNumber}手目`}
-      </Text>
+    <View>
+      <View style={styles.statusText}>
+        <Text>{firstPlayer}</Text>
+        <Text>{secondPlayer}</Text>
+      </View>
+      <View style={styles.statusText}>
+        <Text style={styles.textStyle}>
+          Next: {isFirstMove ? firstPlayer : secondPlayer}
+        </Text>
+        <Text style={styles.textStyle}>{judgeWinnerMessage()}</Text>
+        <Text style={styles.textStyle}>
+          {judgeWinnerMessage()
+            ? `${turnNumber - 1}手で決着`
+            : `${turnNumber}手目`}
+        </Text>
+      </View>
     </View>
   );
 }
@@ -38,6 +50,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   textStyle: {
-    fontSize: 30,
+    fontSize: 20,
   },
 });

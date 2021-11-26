@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, View, StyleSheet } from "react-native";
 import { Table, Rows } from "react-native-table-component";
 import { Dimensions } from "react-native";
 import GomokuBox from "./GomokuBox";
 import GomokuGameStatusText from "./GomokuGameStatusText";
+import { SquareNumberContext, QuoteContext } from "../../context";
 
 export type BoardValueType = -1 | 0 | 1;
 export type JudgementType = -1 | 0 | 1 | undefined;
@@ -14,17 +15,20 @@ export type JudgeWinnerMessageType =
   | undefined;
 
 function GomokuTop() {
+  const { squareNumber } = useContext(SquareNumberContext);
+  const { quote } = useContext(QuoteContext);
   const windowWidth = Dimensions.get("window").width;
-  const squareNumber = 9;
-  const quote = 3;
-  const squareWidth = (windowWidth - 40) / squareNumber;
+  const squareNumberValue =
+    parseInt(squareNumber, 10) > 0 ? parseInt(squareNumber, 10) : 9;
+  const quoteValue = parseInt(quote, 10) > 0 ? parseInt(quote, 10) : 5;
+  const squareWidth = (windowWidth - 40) / squareNumberValue;
   const [isFirstMove, setIsFirstMove] = useState(true);
   const [turnNumber, setTurnNumber] = useState<number>(1);
 
   const [boardValuesArray, setBoardValuesArray] = useState<BoardValueType[][]>(
-    Array(squareNumber)
+    Array(squareNumberValue)
       .fill(0)
-      .map(() => Array(squareNumber).fill(0))
+      .map(() => Array(squareNumberValue).fill(0))
   );
 
   const handlePressSquare = (
@@ -51,10 +55,10 @@ function GomokuTop() {
     setTurnNumber(1);
   };
 
-  const squares = Array(squareNumber)
+  const squares = Array(squareNumberValue)
     .fill(0)
     .map((_, Ycoordinate) =>
-      Array(squareNumber)
+      Array(squareNumberValue)
         .fill(0)
         .map((_, Xcoordinate) => (
           <GomokuBox
@@ -68,61 +72,63 @@ function GomokuTop() {
     );
 
   const judgeFinish = (
-    quote: number,
-    squareNumber: number,
+    quoteValue: number,
+    squareNumberValue: number,
     turnNumber: number,
     boardValuesArray: BoardValueType[][]
   ): JudgementType => {
-    for (let i = 0; i < squareNumber; i++) {
-      for (let j = 0; j < squareNumber; j++) {
+    for (let i = 0; i < squareNumberValue; i++) {
+      for (let j = 0; j < squareNumberValue; j++) {
         if (boardValuesArray[i][j] === 1) {
-          for (let k = 1; k < quote; k++) {
+          for (let k = 1; k < quoteValue; k++) {
             if (boardValuesArray[i][j + k] !== 1) break;
-            if (k === quote - 1) return 1;
+            if (k === quoteValue - 1) return 1;
           }
-          if (i <= squareNumber - quote) {
-            for (let k = 1; k < quote; k++) {
+          if (i <= squareNumberValue - quoteValue) {
+            for (let k = 1; k < quoteValue; k++) {
               if (boardValuesArray[i + k][j] !== 1) break;
-              if (k === quote - 1) return 1;
+              if (k === quoteValue - 1) return 1;
             }
-            for (let k = 1; k < quote; k++) {
+            for (let k = 1; k < quoteValue; k++) {
               if (boardValuesArray[i + k][j + k] !== 1) break;
-              if (k === quote - 1) return 1;
+              if (k === quoteValue - 1) return 1;
             }
-            for (let k = 1; k < quote; k++) {
+            for (let k = 1; k < quoteValue; k++) {
               if (boardValuesArray[i + k][j - k] !== 1) break;
-              if (k === quote - 1) return 1;
+              if (k === quoteValue - 1) return 1;
             }
           }
         }
         if (boardValuesArray[i][j] === -1) {
-          for (let k = 1; k < quote; k++) {
+          for (let k = 1; k < quoteValue; k++) {
             if (boardValuesArray[i][j + k] !== -1) break;
-            if (k === quote - 1) return -1;
+            if (k === quoteValue - 1) return -1;
           }
-          if (i <= squareNumber - quote) {
-            for (let k = 1; k < quote; k++) {
+          if (i <= squareNumberValue - quoteValue) {
+            for (let k = 1; k < quoteValue; k++) {
               if (boardValuesArray[i + k][j] !== -1) break;
-              if (k === quote - 1) return -1;
+              if (k === quoteValue - 1) return -1;
             }
-            for (let k = 1; k < quote; k++) {
+            for (let k = 1; k < quoteValue; k++) {
               if (boardValuesArray[i + k][j + k] !== -1) break;
-              if (k === quote - 1) return -1;
+              if (k === quoteValue - 1) return -1;
             }
-            for (let k = 1; k < quote; k++) {
+            for (let k = 1; k < quoteValue; k++) {
               if (boardValuesArray[i + k][j - k] !== -1) break;
-              if (k === quote - 1) return -1;
+              if (k === quoteValue - 1) return -1;
             }
           }
         }
       }
     }
-    if (turnNumber === Math.pow(squareNumber, 2) + 1) return 0;
+    if (turnNumber === Math.pow(squareNumberValue, 2) + 1) return 0;
     return;
   };
 
   const judgeWinnerMessage = () => {
-    switch (judgeFinish(quote, squareNumber, turnNumber, boardValuesArray)) {
+    switch (
+      judgeFinish(quoteValue, squareNumberValue, turnNumber, boardValuesArray)
+    ) {
       case 1:
         return "〇の勝利です";
       case -1:
@@ -135,8 +141,8 @@ function GomokuTop() {
 
   const isGameFinished = (): boolean => {
     const judge = judgeFinish(
-      quote,
-      squareNumber,
+      quoteValue,
+      squareNumberValue,
       turnNumber,
       boardValuesArray
     );

@@ -8,8 +8,8 @@ import {
 } from "./src/context";
 
 export default function App() {
-  const [firstPlayer, setFirstPlayer] = useState("先手番");
-  const [secondPlayer, setSecondPlayer] = useState("後手番");
+  const [firstPlayer, setFirstPlayer] = useState("A");
+  const [secondPlayer, setSecondPlayer] = useState("B");
   const [squareNumber, setSquareNumber] = useState("9");
   const [quote, setQuote] = useState("5");
 

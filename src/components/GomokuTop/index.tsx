@@ -69,10 +69,14 @@ function GomokuTop() {
   };
 
   const resetBoard = useCallback(() => {
-    setBoardValuesArray(boardValuesArray.map((array) => array.fill(0)));
+    setBoardValuesArray(
+      Array(parsedSquareNumber)
+        .fill(0)
+        .map(() => Array(parsedSquareNumber).fill(0))
+    );
     setIsFirstMove(true);
     setTurnNumber(1);
-  }, []);
+  }, [parsedSquareNumber]);
 
   const squares = useMemo(
     () =>
@@ -183,7 +187,9 @@ function GomokuTop() {
         .fill(0)
         .map(() => Array(parsedSquareNumber).fill(0))
     );
-  }, [parsedSquareNumber]);
+    setIsFirstMove(true);
+    setTurnNumber(1);
+  }, [parsedSquareNumber, parsedQuote]);
 
   return (
     <View>
@@ -191,6 +197,7 @@ function GomokuTop() {
         isFirstMove={isFirstMove}
         judgeWinnerMessage={judgeWinnerMessage}
         turnNumber={turnNumber}
+        parsedQuote={parsedQuote}
       />
       <Table>
         <Rows data={squares} />

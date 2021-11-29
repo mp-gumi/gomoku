@@ -10,12 +10,14 @@ type GomokuGameStatusType = {
     | "引き分けです"
     | undefined;
   turnNumber: number;
+  parsedQuote: number;
 };
 
 function GomokuGameStatusText({
   isFirstMove,
   judgeWinnerMessage,
   turnNumber,
+  parsedQuote,
 }: GomokuGameStatusType) {
   const { firstPlayer } = useContext(FirstPlayerContext);
   const { secondPlayer } = useContext(SecondPlayerContext);
@@ -23,18 +25,39 @@ function GomokuGameStatusText({
   return (
     <View>
       <View style={styles.statusText}>
-        <Text>{firstPlayer}</Text>
-        <Text>{secondPlayer}</Text>
-      </View>
-      <View style={styles.statusText}>
         <Text style={styles.textStyle}>
-          Next: {isFirstMove ? firstPlayer : secondPlayer}
+          {judgeWinnerMessage()
+            ? judgeWinnerMessage()
+            : `${parsedQuote}個並べたら勝利`}
         </Text>
-        <Text style={styles.textStyle}>{judgeWinnerMessage()}</Text>
         <Text style={styles.textStyle}>
           {judgeWinnerMessage()
             ? `${turnNumber - 1}手で決着`
             : `${turnNumber}手目`}
+        </Text>
+      </View>
+      <View style={styles.statusText}>
+        <Text
+          style={[
+            styles.playerNameStyle,
+            {
+              borderBottomColor:
+                !judgeWinnerMessage() && isFirstMove ? "#28f" : "#00000000",
+            },
+          ]}
+        >
+          {firstPlayer}さん
+        </Text>
+        <Text
+          style={[
+            styles.playerNameStyle,
+            {
+              borderBottomColor:
+                judgeWinnerMessage() || isFirstMove ? "#00000000" : "#d31",
+            },
+          ]}
+        >
+          {secondPlayer}さん
         </Text>
       </View>
     </View>
@@ -48,8 +71,14 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "space-between",
     flexDirection: "row",
+    marginBottom: 10,
   },
   textStyle: {
+    fontSize: 16,
+  },
+  playerNameStyle: {
     fontSize: 20,
+    paddingBottom: 1,
+    borderBottomWidth: 3,
   },
 });

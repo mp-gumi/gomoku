@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { FirstPlayerContext, SecondPlayerContext } from "../../../context";
 
-type GomokuGameStatusType = {
+type GameStatusTextType = {
   isFirstMove: boolean;
   judgeWinnerMessage: () =>
     | "〇の勝利です"
@@ -13,12 +13,12 @@ type GomokuGameStatusType = {
   parsedQuote: number;
 };
 
-function GomokuGameStatusText({
+function GameStatusTextText({
   isFirstMove,
   judgeWinnerMessage,
   turnNumber,
   parsedQuote,
-}: GomokuGameStatusType) {
+}: GameStatusTextType) {
   const { firstPlayer } = useContext(FirstPlayerContext);
   const { secondPlayer } = useContext(SecondPlayerContext);
 
@@ -64,7 +64,7 @@ function GomokuGameStatusText({
   );
 }
 
-export default GomokuGameStatusText;
+export default GameStatusTextText;
 
 const styles = StyleSheet.create({
   statusText: {

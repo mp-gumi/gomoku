@@ -8,8 +8,8 @@ import React, {
 import { Button, View, StyleSheet } from "react-native";
 import { Table, Rows } from "react-native-table-component";
 import { Dimensions } from "react-native";
-import GomokuBox from "./GomokuBox";
-import GomokuGameStatusText from "./GomokuGameStatusText";
+import Box from "./Box";
+import GameStatusText from "./GameStatusText";
 import { SquareNumberContext, QuoteContext } from "../../context";
 
 export type BoardValueType = -1 | 0 | 1;
@@ -86,7 +86,7 @@ function GomokuTop() {
           Array(boardValuesArray.length)
             .fill(0)
             .map((_, Xcoordinate) => (
-              <GomokuBox
+              <Box
                 squareWidth={squareWidth}
                 Xcoordinate={Xcoordinate}
                 Ycoordinate={Ycoordinate}
@@ -193,7 +193,7 @@ function GomokuTop() {
 
   return (
     <View>
-      <GomokuGameStatusText
+      <GameStatusText
         isFirstMove={isFirstMove}
         judgeWinnerMessage={judgeWinnerMessage}
         turnNumber={turnNumber}

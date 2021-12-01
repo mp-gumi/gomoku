@@ -1,14 +1,4 @@
 module.exports = {
-  extends: [
-    "eslint:recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "plugin:import/recommended",
-    "plugin:import/typescript",
-    "prettier",
-  ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     sourceType: "module",
@@ -23,6 +13,16 @@ module.exports = {
     "unused-imports",
     // ...
     "react-hooks",
+  ],
+  extends: [
+    "eslint:recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "prettier",
   ],
   rules: {
     // eslint

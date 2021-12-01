@@ -4,7 +4,7 @@ import o from "../../../../assets/o.png";
 import x from "../../../../assets/x.png";
 import { BoardValueType } from "..";
 
-type GomokuBoxProps = {
+type BoxProps = {
   squareWidth: number;
   Xcoordinate: number;
   Ycoordinate: number;
@@ -12,13 +12,13 @@ type GomokuBoxProps = {
   handlePressSquare: (Xcoordinate: number, Ycoordinate: number) => void;
 };
 
-function GomokuBox({
+function Box({
   squareWidth,
   Xcoordinate,
   Ycoordinate,
   boardValuesArray,
   handlePressSquare,
-}: GomokuBoxProps) {
+}: BoxProps) {
   const squareImage = useCallback((): JSX.Element | undefined => {
     if (boardValuesArray[Ycoordinate][Xcoordinate] === 1) {
       return (
@@ -49,7 +49,7 @@ function GomokuBox({
   );
 }
 
-export default GomokuBox;
+export default Box;
 
 const styles = StyleSheet.create({
   container: {
